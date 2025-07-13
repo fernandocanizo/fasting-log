@@ -3,36 +3,62 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fasting Logging</title>
+    <title>Fasting Log</title>
 
     <script
       type="module"
       src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.0-beta.11/bundles/datastar.js"
     ></script>
+
+    <style>
+      body {
+        font-family:
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+        background: #f5f5f7;
+        color: #1d1d1f;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .logout-button {
+        background: #ff3b30;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        float: right;
+      }
+
+      .logout-button:hover {
+        background: #d70015;
+      }
+    </style>
   </head>
   <body>
-    <h1>Fasting logging</h1>
-
-    <input data-bind-input />
-    <div data-text="$input">
-      I will be replaced with the contents of the input signal
-    </div>
-
-    <div
-      data-signals="{response: '', answer: 'bread'}"
-      data-computed-correct="$response.toLowerCase() === $answer"
-    >
-      <div id="question">What do you put in a toaster?</div>
-      <button data-on-click="$response = prompt('Answer:') ?? ''">BUZZ</button>
-      <div data-show="$response != ''">
-        You answered “<span data-text="$response"></span>”.
-        <span data-show="$correct">That is correct ✅</span>
-        <span data-show="!$correct">
-          The correct answer is “
-          <span data-text="$answer"></span>
-          ” 🤷
-        </span>
-      </div>
+    <div class="header">
+      <button
+        class="logout-button"
+        data-on-click="
+          fetch('/api/logout', { method: 'POST' })
+          .then(() => window.location.href = '/login');
+        "
+      >
+        Logout
+      </button>
+      <h1>🥗 Fasting Log</h1>
+      <p>Welcome to your fasting log application!</p>
     </div>
   </body>
 </html>
