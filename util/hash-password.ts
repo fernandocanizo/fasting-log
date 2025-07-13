@@ -31,8 +31,9 @@ const main = async (): Promise<void> => {
     console.log("\n🔄 Generating secure hash...")
 
     // Use bcrypt with salt rounds of 12 for strong security
-    const saltRounds = "12"
-    const hashedPassword = await bcrypt.hash(password, saltRounds)
+    const saltRounds = 12
+    const salt = await bcrypt.genSalt(saltRounds)
+    const hashedPassword = await bcrypt.hash(password, salt)
 
     console.log("\n✅ Password hashed successfully!")
     console.log("🔑 Hash:")
