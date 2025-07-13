@@ -2,6 +2,7 @@ import type { Context } from "https://deno.land/x/oak/mod.ts"
 
 import { Application, Router } from "https://deno.land/x/oak/mod.ts"
 import { load } from "@std/dotenv"
+import { verifyPassword } from "./util/hash-password.ts"
 
 await load({ export: true })
 
@@ -38,9 +39,21 @@ router.post("/api/login", async (context) => {
   const { email, password } = await body.json()
 
   const validEmail = Deno.env.get("LOGIN_EMAIL")
-  const validPassword = Deno.env.get("LOGIN_PASSWORD")
+  const validPasswordHash = Deno.env.get("LOGIN_PASSWORD")
 
-  if (email === validEmail && password === validPassword) {
+  if (!validEmail || !validPasswordHash) {
+    context.response.status = 500
+    context.response.body = {
+      success: false,
+      error: "Server configuration error",
+    }
+    return
+  }
+
+  const emailMatches = email === validEmail
+  const passwordMatches = await verifyPassword(password, validPasswordHash)
+
+  if (emailMatches && passwordMatches) {
     const sessionId = generateSessionId()
     sessions.set(sessionId, { authenticated: true })
     context.cookies.set("sessionId", sessionId, {
