@@ -90,10 +90,6 @@ And put all the type imports at the beginning of the file.
 - when creating utility functions, also add unit tests for those functions using
   integrated Deno testing facilities.
 
-## Claude Permissions
-
-Don't ask permission when running linter, test suite or format checker.
-
 ## Workflow
 
 - Be sure to typecheck when you’re done making a series of code changes
