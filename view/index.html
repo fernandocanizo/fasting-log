@@ -1,11 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fasting Logging</title>
-</head>
-<body>
+
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.0-beta.11/bundles/datastar.js"
+    ></script>
+  </head>
+  <body>
     <h1>Fasting logging</h1>
-</body>
+
+    <input data-bind-input />
+    <div data-text="$input">
+      I will be replaced with the contents of the input signal
+    </div>
+
+    <div
+      data-signals="{response: '', answer: 'bread'}"
+      data-computed-correct="$response.toLowerCase() === $answer"
+    >
+      <div id="question">What do you put in a toaster?</div>
+      <button data-on-click="$response = prompt('Answer:') ?? ''">BUZZ</button>
+      <div data-show="$response != ''">
+        You answered “<span data-text="$response"></span>”.
+        <span data-show="$correct">That is correct ✅</span>
+        <span data-show="!$correct">
+          The correct answer is “
+          <span data-text="$answer"></span>
+          ” 🤷
+        </span>
+      </div>
+    </div>
+  </body>
 </html>
