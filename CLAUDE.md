@@ -42,3 +42,16 @@ deno check **/*.ts
 - No semicolons (configured in deno.json:8)
 - Uses Deno's recommended lint rules
 - TypeScript with strict checking enabled
+
+## Testing
+
+- when creating utility functions, also add unit tests for those functions using integrated Deno testing facilities.
+
+## Claude Permissions
+
+Don't ask permission when running linter, test suite or format checker.
+
+## Workflow
+
+- Be sure to typecheck when you’re done making a series of code changes
+- Prefer running single tests, and not the whole test suite, for performance
