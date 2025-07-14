@@ -85,6 +85,37 @@ import { Application, Router } from "https://deno.land/x/oak/mod.ts"
 
 And put all the type imports at the beginning of the file.
 
+## Code Organization
+
+- **No complex code in strings**: Avoid creating complex logic inside HTML data attributes or string literals. Only short expressions (function calls, simple ternary operators) are allowed in strings. Any code that spans more than a single short line must be extracted into its own module or a general-purpose module.
+
+Examples of what NOT to do:
+```html
+<!-- BAD: Complex logic in data attribute -->
+<button data-on-click="
+  $isSubmitting = true;
+  $loginError = '';
+  fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: $email, password: $password })
+  })
+  .then(response => response.json())
+  .then(data => {
+    // more complex logic...
+  });
+">
+```
+
+Examples of what TO do:
+```html
+<!-- GOOD: Simple function call -->
+<button data-on-click="login()">
+
+<!-- GOOD: Short ternary operator -->
+<span data-text="$isSubmitting ? 'Loading...' : 'Submit'">
+```
+
 ## Testing
 
 - when creating utility functions, also add unit tests for those functions using
