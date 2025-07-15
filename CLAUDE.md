@@ -18,8 +18,9 @@ It will use plain CSS for styling HTML, not Tailwind no other CSS frameworks.
   - Runs on port 3500
 - **Frontend**: Single HTML page with Datastar framework integration
   - Uses Datastar v1.0.0-beta.11 for reactive data binding
-  - Currently contains example code (toaster question) to be replaced with
-    fasting log functionality
+  - TypeScript files in `js/` are built to `dist/js/` using Vite
+  - CSS files in `css/` are copied to `dist/css/` during build
+  - Server serves built assets from `dist/` directory
 
 ## Development Commands
 
@@ -41,6 +42,9 @@ deno lint
 
 # Type check
 deno check **/*.ts
+
+# Build frontend assets (TypeScript + CSS)
+deno task build
 ```
 
 ## Code Style
