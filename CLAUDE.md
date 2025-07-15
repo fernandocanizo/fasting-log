@@ -87,9 +87,14 @@ And put all the type imports at the beginning of the file.
 
 ## Code Organization
 
-- **No complex code in strings**: Avoid creating complex logic inside HTML data attributes or string literals. Only short expressions (function calls, simple ternary operators) are allowed in strings. Any code that spans more than a single short line must be extracted into its own module or a general-purpose module.
+- **No complex code in strings**: Avoid creating complex logic inside HTML data
+  attributes or string literals. Only short expressions (function calls, simple
+  ternary operators) are allowed in strings. Any code that spans more than a
+  single short line must be extracted into its own module or a general-purpose
+  module.
 
 Examples of what NOT to do:
+
 ```html
 <!-- BAD: Complex logic in data attribute -->
 <button data-on-click="
@@ -108,6 +113,7 @@ Examples of what NOT to do:
 ```
 
 Examples of what TO do:
+
 ```html
 <!-- GOOD: Simple function call -->
 <button data-on-click="login()">
