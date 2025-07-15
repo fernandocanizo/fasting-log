@@ -1,13 +1,15 @@
-// Type definitions for Datastar signals
-declare let $isSubmitting: boolean
-declare let $loginError: string
-declare let $email: string
-declare let $password: string
-
 // API response types
 interface LoginResponse {
   success: boolean
   error?: string
+}
+
+// Datastar API types
+interface DatastarStore {
+  signals: {
+    signal: (name: string) => { value: any }
+    setSignal: (name: string, value: any) => void
+  }
 }
 
 // Fasting Log namespace interface
@@ -18,6 +20,7 @@ interface FastingLogNamespace {
 // Extend globalThis to include our namespace
 declare global {
   var fl: FastingLogNamespace
+  var ds: DatastarStore
 }
 
 // Initialize or get existing fl namespace
@@ -25,26 +28,32 @@ globalThis.fl = globalThis.fl || {}
 
 const login = async (): Promise<void> => {
   try {
-    $isSubmitting = true
-    $loginError = ""
+    // Access Datastar signals through the global ds object
+    const store = globalThis.ds.signals
+    
+    store.setSignal("isSubmitting", true)
+    store.setSignal("loginError", "")
+
+    const email = store.signal("email").value
+    const password = store.signal("password").value
 
     const response: Response = await fetch("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: $email, password: $password }),
+      body: JSON.stringify({ email, password }),
     })
 
     const data: LoginResponse = await response.json()
-    $isSubmitting = false
+    store.setSignal("isSubmitting", false)
 
     if (data.success) {
       globalThis.location.href = "/"
     } else {
-      $loginError = data.error || "Login failed"
+      store.setSignal("loginError", data.error || "Login failed")
     }
   } catch (_error: unknown) {
-    $isSubmitting = false
-    $loginError = "Connection error. Please try again."
+    globalThis.ds.signals.setSignal("isSubmitting", false)
+    globalThis.ds.signals.setSignal("loginError", "Connection error. Please try again.")
   }
 }
 

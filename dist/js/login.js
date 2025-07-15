@@ -1,23 +1,26 @@
 globalThis.fl = globalThis.fl || {};
 const login = async () => {
   try {
-    $isSubmitting = true;
-    $loginError = "";
+    const store = globalThis.ds.signals;
+    store.setSignal("isSubmitting", true);
+    store.setSignal("loginError", "");
+    const email = store.signal("email").value;
+    const password = store.signal("password").value;
     const response = await fetch("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: $email, password: $password })
+      body: JSON.stringify({ email, password })
     });
     const data = await response.json();
-    $isSubmitting = false;
+    store.setSignal("isSubmitting", false);
     if (data.success) {
       globalThis.location.href = "/";
     } else {
-      $loginError = data.error || "Login failed";
+      store.setSignal("loginError", data.error || "Login failed");
     }
   } catch (_error) {
-    $isSubmitting = false;
-    $loginError = "Connection error. Please try again.";
+    globalThis.ds.signals.setSignal("isSubmitting", false);
+    globalThis.ds.signals.setSignal("loginError", "Connection error. Please try again.");
   }
 };
 globalThis.fl.login = login;
