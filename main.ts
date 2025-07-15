@@ -101,20 +101,20 @@ router.get("/", requireAuth, async (context) => {
   })
 })
 
-// CSS file serving
+// CSS file serving (serve built files from dist/css)
 router.get("/css/:filename", async (context) => {
   const filename = context.params.filename
   await context.send({
-    root: `${Deno.cwd()}/css`,
+    root: `${Deno.cwd()}/dist/css`,
     path: filename,
   })
 })
 
-// JS file serving
+// JS file serving (serve built files from dist/js)
 router.get("/js/:filename", async (context) => {
   const filename = context.params.filename
   await context.send({
-    root: `${Deno.cwd()}/js`,
+    root: `${Deno.cwd()}/dist/js`,
     path: filename,
   })
 })
