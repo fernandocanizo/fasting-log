@@ -101,7 +101,25 @@ router.get("/", requireAuth, async (context) => {
   })
 })
 
-// Static file serving for CSS, JS, etc.
+// CSS file serving
+router.get("/css/:filename", async (context) => {
+  const filename = context.params.filename
+  await context.send({
+    root: `${Deno.cwd()}/css`,
+    path: filename,
+  })
+})
+
+// JS file serving
+router.get("/js/:filename", async (context) => {
+  const filename = context.params.filename
+  await context.send({
+    root: `${Deno.cwd()}/js`,
+    path: filename,
+  })
+})
+
+// Static file serving for other assets
 router.get("/static/:filename", async (context) => {
   const filename = context.params.filename
   await context.send({

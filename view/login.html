@@ -10,96 +10,9 @@
       src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.0-beta.11/bundles/datastar.js"
     ></script>
 
-    <style>
-      body {
-        font-family:
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          Roboto,
-          sans-serif;
-        max-width: 400px;
-        margin: 2rem auto;
-        padding: 2rem;
-        background: #f5f5f7;
-      }
+    <script type="module" src="js/login.js"></script>
 
-      .login-container {
-        background: white;
-        padding: 2rem;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      h1 {
-        text-align: center;
-        color: #1d1d1f;
-        margin-bottom: 2rem;
-      }
-
-      .form-group {
-        margin-bottom: 1rem;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 0.5rem;
-        color: #424245;
-        font-weight: 500;
-      }
-
-      input[type="email"], input[type="password"] {
-        width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #d2d2d7;
-        border-radius: 8px;
-        font-size: 1rem;
-        box-sizing: border-box;
-      }
-
-      input[type="email"]:focus, input[type="password"]:focus {
-        outline: none;
-        border-color: #007aff;
-        box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
-      }
-
-      .error {
-        color: #ff3b30;
-        font-size: 0.875rem;
-        margin-top: 0.25rem;
-      }
-
-      .login-button {
-        width: 100%;
-        background: #007aff;
-        color: white;
-        border: none;
-        padding: 0.75rem;
-        border-radius: 8px;
-        font-size: 1rem;
-        font-weight: 500;
-        cursor: pointer;
-        margin-top: 1rem;
-      }
-
-      .login-button:hover {
-        background: #0056cc;
-      }
-
-      .login-button:disabled {
-        background: #d2d2d7;
-        cursor: not-allowed;
-      }
-
-      .login-error {
-        background: #ffebee;
-        color: #c62828;
-        padding: 0.75rem;
-        border-radius: 8px;
-        margin-top: 1rem;
-        text-align: center;
-      }
-    </style>
+    <link rel="stylesheet" href="css/login.css">
   </head>
   <body>
     <div class="login-container">
@@ -122,8 +35,7 @@
             <input
               type="email"
               id="email"
-              data-bind-input="email"
-              data-bind-value="email"
+              data-bind="email"
               placeholder="your-email@example.com"
               required
             />
@@ -137,8 +49,7 @@
             <input
               type="password"
               id="password"
-              data-bind-input="password"
-              data-bind-value="password"
+              data-bind="password"
               placeholder="Enter your password"
               required
             />
@@ -151,31 +62,9 @@
             type="button"
             class="login-button"
             data-bind-disabled="!$formValid || $isSubmitting"
-            data-on-click="
-              $isSubmitting = true;
-              $loginError = '';
-              fetch('/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: $email, password: $password })
-              })
-              .then(response => response.json())
-              .then(data => {
-                $isSubmitting = false;
-                if (data.success) {
-                  window.location.href = '/';
-                } else {
-                  $loginError = data.error || 'Login failed';
-                }
-              })
-              .catch(error => {
-                $isSubmitting = false;
-                $loginError = 'Connection error. Please try again.';
-              });
-            "
+            data-on-click="fl.login()"
+            data-text="$isSubmitting ? 'Signing in...' : 'Sign In'"
           >
-            <span data-show="!$isSubmitting">Sign In</span>
-            <span data-show="$isSubmitting">Signing in...</span>
           </button>
 
           <div
