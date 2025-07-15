@@ -4,38 +4,27 @@ interface LoginResponse {
   error?: string
 }
 
-// Datastar API types
-interface DatastarStore {
-  signals: {
-    signal: (name: string) => { value: any }
-    setSignal: (name: string, value: any) => void
-  }
-}
-
 // Fasting Log namespace interface
 interface FastingLogNamespace {
-  login?: () => Promise<void>
+  login?: (ctx: any) => Promise<void>
 }
 
 // Extend globalThis to include our namespace
 declare global {
   var fl: FastingLogNamespace
-  var ds: DatastarStore
 }
 
 // Initialize or get existing fl namespace
 globalThis.fl = globalThis.fl || {}
 
-const login = async (): Promise<void> => {
+const login = async (ctx: any): Promise<void> => {
   try {
-    // Access Datastar signals through the global ds object
-    const store = globalThis.ds.signals
-    
-    store.setSignal("isSubmitting", true)
-    store.setSignal("loginError", "")
+    // Access signals through the context parameter
+    ctx.signals.setSignal("isSubmitting", true)
+    ctx.signals.setSignal("loginError", "")
 
-    const email = store.signal("email").value
-    const password = store.signal("password").value
+    const email = ctx.signals.signal("email").value
+    const password = ctx.signals.signal("password").value
 
     const response: Response = await fetch("/api/login", {
       method: "POST",
@@ -44,16 +33,16 @@ const login = async (): Promise<void> => {
     })
 
     const data: LoginResponse = await response.json()
-    store.setSignal("isSubmitting", false)
+    ctx.signals.setSignal("isSubmitting", false)
 
     if (data.success) {
       globalThis.location.href = "/"
     } else {
-      store.setSignal("loginError", data.error || "Login failed")
+      ctx.signals.setSignal("loginError", data.error || "Login failed")
     }
   } catch (_error: unknown) {
-    globalThis.ds.signals.setSignal("isSubmitting", false)
-    globalThis.ds.signals.setSignal("loginError", "Connection error. Please try again.")
+    ctx.signals.setSignal("isSubmitting", false)
+    ctx.signals.setSignal("loginError", "Connection error. Please try again.")
   }
 }
 
