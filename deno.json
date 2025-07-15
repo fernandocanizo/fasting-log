@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "check": "deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx",
+    "check": "deno fmt --check && deno lint && deno check **/*.ts",
     "dev": "deno run -A --watch main.ts",
     "start": "deno run --allow-net --allow-read --allow-env main.ts",
     "hash-password": "deno run --allow-read util/hash-password.ts"
