@@ -27,7 +27,7 @@
         }"
         data-computed-emailEmpty="$email.trim() === ''"
         data-computed-passwordEmpty="$password.trim() === ''"
-        data-computed-formValid="!$emailEmpty && !$passwordEmpty"
+        data-computed-formValid="!$emailempty && !$passwordempty"
       >
         <form>
           <div class="form-group">
@@ -40,7 +40,7 @@
               autocomplete="email"
               required
             />
-            <div data-show="$emailEmpty && $email !== ''" class="error">
+            <div data-show="$emailempty && $email !== ''" class="error">
               Email is required
             </div>
           </div>
@@ -55,7 +55,7 @@
               autocomplete="current-password"
               required
             />
-            <div data-show="$passwordEmpty && $password !== ''" class="error">
+            <div data-show="$passwordempty && $password !== ''" class="error">
               Password is required
             </div>
           </div>
@@ -63,7 +63,7 @@
           <button
             type="button"
             class="login-button"
-            data-disabled="!$formValid || $isSubmitting"
+            data-disabled="!$formvalid || $isSubmitting"
             data-on-click="fl.login()"
             data-text="$isSubmitting ? 'Signing in...' : 'Sign In'"
           >
