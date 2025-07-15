@@ -37,6 +37,7 @@
               id="email"
               data-bind="email"
               placeholder="your-email@example.com"
+              autocomplete="email"
               required
             />
             <div data-show="$emailEmpty && $email !== ''" class="error">
@@ -51,6 +52,7 @@
               id="password"
               data-bind="password"
               placeholder="Enter your password"
+              autocomplete="current-password"
               required
             />
             <div data-show="$passwordEmpty && $password !== ''" class="error">
