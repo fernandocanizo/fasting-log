@@ -8,12 +8,12 @@ const app = new Hono()
 const db = new Database('fasting.sqlite')
 const viewPath = new URL('./views/index.ejs', import.meta.url)
 db.exec(`CREATE TABLE IF NOT EXISTS fasting_log (
-  date DATE,
+  "date" DATE,
   "start" TIME,
   "end" TIME
 )`)
 const insertStart = db.prepare(
-  'INSERT INTO fasting_log (date, "start") VALUES (?, ?)',
+  'INSERT INTO fasting_log ("date", "start") VALUES (?, ?)',
 )
 
 app.use('/css/*', serveStatic({ root: './pub' }))
@@ -40,13 +40,6 @@ const formatDate = (date: Date): string => {
   return `${year}-${month}-${day}`
 }
 
-const saveStartTime = (time: string): { date: string; start: string } => {
-  const date = formatDate(new Date())
-  const rounded = round(time, 'up')
-  insertStart.run(date, rounded)
-  return { date, start: rounded }
-}
-
 app.get('/', async (c) => {
   const now = new Date()
   const year = now.getFullYear().toString()
@@ -59,14 +52,18 @@ app.get('/', async (c) => {
 
 app.post('/start', async (c) => {
   const body = await c.req.parseBody()
-  const time = typeof body.time === 'string' ? body.time : ''
 
-  if (!time) {
+  if (!body.time) {
     return c.text('Missing time', 400)
   }
 
-  const saved = saveStartTime(time)
-  return c.json(saved)
+  if (!body.date) {
+    return c.text('Missing date', 400)
+  }
+
+  const roundedTime= round(body.time, 'up')
+  insertStart.run(body.date, roundedTime)
+  return c.json({ date: body.date, start: roundedTime })
 })
 
 Deno.serve(app.fetch)

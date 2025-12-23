@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <%- include('layouts/head') %>
-    <script type="module" src="js/start.js"></script>
+    <script type="module" src="/js/start.js"></script>
   </head>
   <body>
     <div class="screen">
@@ -13,7 +13,7 @@
           <span><%= month %></span>
           <span><%= day %></span>
         </section>
-        <form class="action" id="start-form" hx-post="/start" hx-swap="none">
+        <form class="action" id="fasting-form" hx-post="/start" hx-swap="none">
           <input type="hidden" name="date" id="date" />
           <input type="hidden" name="time" id="time" />
           <button class="start-button" type="submit">Start</button>
