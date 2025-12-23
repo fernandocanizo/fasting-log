@@ -1,6 +1,13 @@
 import { Hono } from 'hono'
+import { Database } from 'sqlite'
 
 const app = new Hono()
+const db = new Database('fasting.sqlite')
+db.exec(`CREATE TABLE IF NOT EXISTS fasting_log (
+  date DATE,
+  "start" TIME,
+  "end" TIME
+)`)
 
 app.get('/', (c) => {
   const now = new Date()
