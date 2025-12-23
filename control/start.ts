@@ -1,7 +1,7 @@
 import type { Handler } from 'hono'
 
-import { round } from '../back/lib/round.ts'
-import { insertStart } from '../db/fasting_log.ts'
+import { round } from '~/back/lib/round.ts'
+import { insertStart } from '~/db/fasting_log.ts'
 
 export const start: Handler = async (c) => {
   const body = await c.req.parseBody()

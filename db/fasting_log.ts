@@ -1,4 +1,4 @@
-import { init } from './init.ts'
+import { init } from '~/db/init.ts'
 
 const db = init()
 

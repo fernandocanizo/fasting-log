@@ -1,6 +1,6 @@
 import type { Handler } from 'hono'
 
-import { render } from '../front/lib/render.ts'
+import { render } from '~/front/lib/render.ts'
 
 export const index: Handler = async (c) => {
   const now = new Date()

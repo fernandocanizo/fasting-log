@@ -5,11 +5,15 @@ export const render = (
   data: Record<string, string>,
 ): Promise<string> =>
   new Promise((resolve, reject) => {
-    ejs.renderFile(path.pathname, data, (error: Error | null, html?: string) => {
-      if (error || !html) {
-        reject(error ?? new Error('Template render failed'))
-        return
-      }
-      resolve(html)
-    })
+    ejs.renderFile(
+      path.pathname,
+      data,
+      (error: Error | null, html?: string) => {
+        if (error || !html) {
+          reject(error ?? new Error('Template render failed'))
+          return
+        }
+        resolve(html)
+      },
+    )
   })

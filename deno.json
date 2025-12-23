@@ -2,7 +2,8 @@
   "imports": {
     "hono": "jsr:@hono/hono@^4.11.1",
     "sqlite": "jsr:@db/sqlite@^0.12.0",
-    "ejs": "npm:ejs@3.1.10"
+    "ejs": "npm:ejs@3.1.10",
+    "~/": "./"
   },
   "tasks": {
     "check": "deno fmt --check && deno lint && deno check **/*.ts",
