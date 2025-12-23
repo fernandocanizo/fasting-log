@@ -11,6 +11,7 @@
     "build": "deno run -A npm:vite build"
   },
   "fmt": {
+    "singleQuote": true,
     "semiColons": false,
     "exclude": ["dist/"]
   },

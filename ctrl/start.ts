@@ -14,7 +14,7 @@ export const start: Handler = async (c) => {
     return c.text('Missing date', 400)
   }
 
-  const roundedTime= round(body.time as string, 'up')
+  const roundedTime = round(body.time as string, 'up')
   insertStart.run(body.date as string, roundedTime)
   return c.json({ date: body.date, start: roundedTime })
 }
