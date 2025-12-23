@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <%- include('layouts/head') %>
+    <script type="module" src="js/start.js"></script>
   </head>
   <body>
     <div class="screen">
@@ -13,23 +14,11 @@
           <span><%= day %></span>
         </section>
         <form class="action" id="start-form" hx-post="/start" hx-swap="none">
-          <input type="hidden" name="time" id="start-time" />
+          <input type="hidden" name="date" id="date" />
+          <input type="hidden" name="time" id="time" />
           <button class="start-button" type="submit">Start</button>
         </form>
       </main>
     </div>
-    <script>
-      const startForm = document.getElementById('start-form')
-      const startTimeInput = document.getElementById('start-time')
-
-      if (startForm && startTimeInput) {
-        startForm.addEventListener('submit', () => {
-          const now = new Date()
-          const hours = String(now.getHours()).padStart(2, '0')
-          const minutes = String(now.getMinutes()).padStart(2, '0')
-          startTimeInput.value = hours + ':' + minutes
-        })
-      }
-    </script>
   </body>
 </html>

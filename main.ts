@@ -17,6 +17,7 @@ const insertStart = db.prepare(
 )
 
 app.use('/css/*', serveStatic({ root: './pub' }))
+app.use('/js/*', serveStatic({ root: './pub' }))
 
 const renderTemplate = (
   path: URL,
