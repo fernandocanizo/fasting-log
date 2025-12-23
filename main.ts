@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { Database } from 'sqlite'
+import { round } from './lib/round.ts'
 
 const app = new Hono()
 const db = new Database('fasting.sqlite')
@@ -8,6 +9,23 @@ db.exec(`CREATE TABLE IF NOT EXISTS fasting_log (
   "start" TIME,
   "end" TIME
 )`)
+const insertStart = db.prepare(
+  'INSERT INTO fasting_log (date, "start") VALUES (?, ?)',
+)
+
+const formatDate = (date: Date): string => {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+const saveStartTime = (time: string): { date: string; start: string } => {
+  const date = formatDate(new Date())
+  const rounded = round(time, 'up')
+  insertStart.run(date, rounded)
+  return { date, start: rounded }
+}
 
 app.get('/', (c) => {
   const now = new Date()
@@ -142,14 +160,46 @@ app.get('/', (c) => {
           <span>${month}</span>
           <span>${day}</span>
         </section>
-        <section class="action">
-          <button class="start-button">Start</button>
-        </section>
+        <form
+          class="action"
+          id="start-form"
+          hx-post="/start"
+          hx-swap="none"
+        >
+          <input type="hidden" name="time" id="start-time" />
+          <button class="start-button" type="submit">Start</button>
+        </form>
       </main>
     </div>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+    <script>
+      const startForm = document.getElementById('start-form')
+      const startTimeInput = document.getElementById('start-time')
+
+      if (startForm && startTimeInput) {
+        startForm.addEventListener('submit', () => {
+          const now = new Date()
+          const hours = String(now.getHours()).padStart(2, '0')
+          const minutes = String(now.getMinutes()).padStart(2, '0')
+          startTimeInput.value = hours + ':' + minutes
+        })
+      }
+    </script>
   </body>
 </html>`)
+})
+
+app.post('/start', async (c) => {
+  const body = await c.req.parseBody()
+  const time = typeof body.time === 'string' ? body.time : ''
+
+  if (!time) {
+    return c.text('Missing time', 400)
+  }
+
+  const saved = saveStartTime(time)
+  return c.json(saved)
 })
 
 Deno.serve(app.fetch)
