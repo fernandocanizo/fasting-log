@@ -3,7 +3,22 @@
     "hono": "jsr:@hono/hono@^4.11.1"
   },
   "tasks": {
-    "start": "deno run --allow-net main.ts"
+    "check": "deno fmt --check && deno lint && deno check **/*.ts",
+    "dev": "deno run -A --watch main.ts",
+    "start": "deno run --allow-net main.ts",
+    "build": "deno run -A npm:vite build"
+  },
+  "fmt": {
+    "semiColons": false,
+    "exclude": ["dist/"]
+  },
+  "lint": {
+    "rules": {
+      "tags": [
+        "recommended"
+      ]
+    },
+    "exclude": ["dist/"]
   },
   "compilerOptions": {
     "jsx": "precompile",
