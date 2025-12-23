@@ -1,6 +1,8 @@
+import type { Handler } from 'hono'
+
 import { render } from '../front/lib/render.ts'
 
-export const index = async (c) => {
+export const index: Handler = async (c) => {
   const now = new Date()
   const year = now.getFullYear().toString()
   const month = String(now.getMonth() + 1).padStart(2, '0')
