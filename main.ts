@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { serveStatic } from 'hono/deno'
-import { index } from './ctrl/index.ts'
-import { start } from './ctrl/start.ts'
+import { index } from './control/index.ts'
+import { start } from './control/start.ts'
 
 const app = new Hono()
 
