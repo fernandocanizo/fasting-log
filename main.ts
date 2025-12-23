@@ -1,20 +1,15 @@
 import { Hono } from 'hono'
 import { serveStatic } from 'hono/deno'
-import { Database } from 'sqlite'
 import ejs from 'ejs'
 import { round } from './lib/round.ts'
+import { init } from './db/init.ts'
+import { insertStart } from './db/fasting_log.ts'
 
 const app = new Hono()
-const db = new Database('fasting.sqlite')
+
+init()
+
 const viewPath = new URL('./views/index.ejs', import.meta.url)
-db.exec(`CREATE TABLE IF NOT EXISTS fasting_log (
-  "date" DATE,
-  "start" TIME,
-  "end" TIME
-)`)
-const insertStart = db.prepare(
-  'INSERT INTO fasting_log ("date", "start") VALUES (?, ?)',
-)
 
 app.use('/css/*', serveStatic({ root: './pub' }))
 app.use('/js/*', serveStatic({ root: './pub' }))
