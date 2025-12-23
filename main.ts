@@ -2,12 +2,10 @@ import { Hono } from 'hono'
 import { serveStatic } from 'hono/deno'
 import ejs from 'ejs'
 import { round } from './lib/round.ts'
-import { init } from './db/init.ts'
 import { insertStart } from './db/fasting_log.ts'
+import { start } from './controller/start.ts'
 
 const app = new Hono()
-
-init()
 
 const viewPath = new URL('./views/index.ejs', import.meta.url)
 
@@ -38,20 +36,6 @@ app.get('/', async (c) => {
   return c.html(html)
 })
 
-app.post('/start', async (c) => {
-  const body = await c.req.parseBody()
-
-  if (!body.time) {
-    return c.text('Missing time', 400)
-  }
-
-  if (!body.date) {
-    return c.text('Missing date', 400)
-  }
-
-  const roundedTime= round(body.time, 'up')
-  insertStart.run(body.date, roundedTime)
-  return c.json({ date: body.date, start: roundedTime })
-})
+app.post('/start', start)
 
 Deno.serve(app.fetch)
