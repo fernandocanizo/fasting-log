@@ -1,5 +1,4 @@
 import { decimal } from './decimal.ts'
-import { prependZero } from './prependZero.ts'
 
 type Direction = 'up' | 'down'
 
@@ -28,5 +27,5 @@ export const round = (time: string, direction: Direction = 'up'): string => {
     }
   }
 
-  return `${hourStr}:${prependZero(steps[i])}`
+  return `${hourStr}:${String(steps[i]).padStart(2, '0')}`
 }
