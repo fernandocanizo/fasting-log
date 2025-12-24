@@ -11,5 +11,6 @@ app.use('/js/*', serveStatic({ root: './pub' }))
 app.get('/', index)
 
 app.post('/start', start)
+app.post('/stop', start)
 
 Deno.serve(app.fetch)

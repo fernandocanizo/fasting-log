@@ -16,8 +16,23 @@
         <form class="action" id="fasting-form" hx-post="/start" hx-swap="none">
           <input type="hidden" name="date" id="date" />
           <input type="hidden" name="time" id="time" />
-          <button class="start-button" type="submit">Start</button>
+          <button class="start-button" type="submit" data-state="idle">
+            <span class="label label-idle">Start</span>
+            <span class="label label-pending">Starting...</span>
+            <span class="label label-active">Stop</span>
+            <span class="label label-stopping">Stopping...</span>
+          </button>
         </form>
+        <section class="summary" id="fasting-result" hidden>
+          <div class="summary-row">
+            <span class="summary-label">Start</span>
+            <span class="summary-value" id="fasting-start">--:--</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">End</span>
+            <span class="summary-value" id="fasting-end">--:--</span>
+          </div>
+        </section>
       </main>
     </div>
   </body>

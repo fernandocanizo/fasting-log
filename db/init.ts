@@ -7,7 +7,7 @@ export const init = (): Database => {
     db = new Database('fasting.sqlite')
 
     db.exec(`CREATE TABLE IF NOT EXISTS fasting_log (
-      date DATE,
+      date DATE PRIMARY KEY,
       startTime TIME,
       endTime TIME
     )`)

@@ -1,9 +1,10 @@
 import type { Handler } from 'hono'
 
 import { round } from '~/back/lib/round.ts'
-import { insertStart } from '~/db/fasting_log.ts'
+import { insertStart, insertStop } from '~/db/fasting_log.ts'
 
 export const start: Handler = async (c) => {
+  console.debug(JSON.stringify(c.req.path, null, 2))
   const body = await c.req.parseBody()
 
   if (!body.time) {
@@ -15,6 +16,14 @@ export const start: Handler = async (c) => {
   }
 
   const roundedTime = round(body.time as string, 'up')
-  insertStart.run(body.date as string, roundedTime)
-  return c.json({ date: body.date, start: roundedTime })
+
+  if (c.req.path === '/start') {
+    insertStart.run(body.date as string, roundedTime)
+    return c.json({ date: body.date, start: roundedTime })
+  } else if (c.req.path === '/stop') {
+    insertStop.run(body.date as string, roundedTime)
+    return c.json({ date: body.date, stop: roundedTime })
+  }
+
+  return c.text('Failed to insert either start or stop times', 500)
 }
